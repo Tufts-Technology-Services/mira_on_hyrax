@@ -1,5 +1,9 @@
 # frozen_string_literal: true
-class Hyrax::CatalogSearchBuilder < Hyrax::SearchBuilder
+class Hyrax::CatalogSearchBuilder < Blacklight::SearchBuilder
+
+  include Hydra::AccessControlsEnforcement
+  include Hyrax::SearchFilters
+
   self.default_processor_chain += [
     :add_access_controls_to_solr_params,
     :show_works_or_works_that_contain_files,
