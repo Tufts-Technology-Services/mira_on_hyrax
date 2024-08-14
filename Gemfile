@@ -47,8 +47,8 @@ gem 'blacklight', '6.24.0'
 gem 'blacklight_advanced_search'
 gem 'omniauth', '1.9.1'
 gem 'omniauth-shibboleth'
-gem 'whenever', require: false
 gem 'sprockets', '3.7.2'
+gem 'whenever', require: false
 
 gem 'tufts-curation', git: 'https://github.com/TuftsUniversity/tufts-curation', tag: 'v2.0.0'
 

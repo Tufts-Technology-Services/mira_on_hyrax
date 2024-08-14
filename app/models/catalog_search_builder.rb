@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 class Hyrax::CatalogSearchBuilder < Blacklight::SearchBuilder
-
   include Hydra::AccessControlsEnforcement
   include Hyrax::SearchFilters
 
