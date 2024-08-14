@@ -14,13 +14,26 @@ ENV LC_ALL C.UTF-8
 
 # --allow-unauthenticated needed for yarn package
 RUN apt-get update && apt-get upgrade -y && \
-  apt-get install --no-install-recommends -y ca-certificates nodejs \
+  apt-get install --no-install-recommends -y ca-certificates \
   build-essential libpq-dev libreoffice unzip ghostscript vim \
   ffmpeg \
   clamav-freshclam clamav-daemon libclamav-dev \
   libqt5webkit5-dev xvfb xauth default-jre-headless --fix-missing --allow-unauthenticated
 
 RUN apt-get install chromium -y
+
+# Install Node.js 16
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+  apt-get install -y nodejs
+
+# Remove cmdtest and yarn installed from the APT repository
+RUN apt-get remove -y cmdtest yarn
+
+# Install Yarn globally using npm
+RUN npm install -g yarn
+
+# Remove imagemagick
+RUN apt-get remove -y imagemagick
 
 RUN apt-get install -y wget
 
@@ -41,7 +54,7 @@ ENV RUBY_THREAD_MACHINE_STACK_SIZE 8388608
 
 RUN gem install rubygems-update -v 3.2.3
 
-RUN gem update --system
+RUN gem update --system 3.3.27
 
 RUN mkdir /data
 WORKDIR /data
@@ -49,7 +62,7 @@ WORKDIR /data
 # Pre-install gems so we aren't reinstalling all the gems when literally any
 # filesystem change happens
 ADD Gemfile /data
-ADD Gemfile.lock /data
+# ADD Gemfile.lock /data
 RUN mkdir /data/build
 ADD ./build/install_gems.sh /data/build
 RUN ./build/install_gems.sh
@@ -58,4 +71,4 @@ RUN ./build/install_gems.sh
 ADD . /data
 
 # install node dependencies, after there are some included
-#RUN yarn install
+RUN yarn install
