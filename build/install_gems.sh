@@ -6,3 +6,5 @@ if [ "${RAILS_ENV}" = 'production' ] || [ "${RAILS_ENV}" = 'staging' ]; then
 else
   bundle install --without production
 fi
+
+bundle update tufts-curation

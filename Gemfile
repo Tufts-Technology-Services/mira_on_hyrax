@@ -15,7 +15,7 @@ gem 'exiftool_vendored'
 # gem 'fedora-migrate', path: '../fedora-migrate'
 gem 'fastimage'
 gem 'hydra-role-management'
-gem 'hyrax', '~> 2.9'
+gem 'hyrax', '3.6.0'
 gem 'mimemagic', '0.3.10'
 gem 'nokogiri', '>=1.8.2' # 1.8.2 fixes security issue https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-15412
 gem 'okcomputer'
@@ -48,8 +48,9 @@ gem 'blacklight_advanced_search'
 gem 'omniauth', '1.9.1'
 gem 'omniauth-shibboleth'
 gem 'whenever', require: false
+gem 'sprockets', '3.7.2'
 
-gem 'tufts-curation', git: 'https://github.com/TuftsUniversity/tufts-curation', tag: 'v1.3.7'
+gem 'tufts-curation', git: 'https://github.com/TuftsUniversity/tufts-curation', tag: 'v2.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger  console
