@@ -1,30 +1,37 @@
 # frozen_string_literal: true
-# This module points the FileSet to the location of the technical metdata.
-# By default, the file holding the metadata is :original_file and the terms
-# are listed under ::characterization_terms.
-# Implementations may define their own terms or use a different source file, but
-# any terms must be set on the ::characterization_proxy by the Hydra::Works::CharacterizationService
-#
-# class MyFileSet
-#   include Hyrax::FileSetBehavior
-# end
-#
-# MyFileSet.characterization_proxy = :master_file
-# MyFileSet.characterization_terms = [:term1, :term2, :term3]
+
 module Hyrax
-  module FileSet
+  class FileSet
+    ##
+    # This module points the FileSet to the location of the technical metadata.
+    # By default, the file holding the metadata is +:original_file+ and the terms
+    # are listed under +.characterization_terms+.
+    #
+    # Implementations may define their own terms or use a different source file, but
+    # any terms must be set on the +.characterization_proxy+ by the
+    # +Hydra::Works::CharacterizationService+.
+    #
+    # @example
+    #   class MyFileSet
+    #     include Hyrax::FileSetBehavior
+    #   end
+    #
+    #   MyFileSet.characterization_proxy = :master_file
+    #   MyFileSet.characterization_terms = [:term1, :term2, :term3]
+    #
     module Characterization
       extend ActiveSupport::Concern
 
       included do
         class_attribute :characterization_terms, :characterization_proxy
+        # we added terms from :bits_per_sample to :file_date_created
         self.characterization_terms = [
           :format_label, :file_size, :height, :width, :filename, :well_formed,
           :page_count, :file_title, :last_modified, :original_checksum,
-          :duration, :sample_rate, :bits_per_sample, :resolution_unit,
+          :duration, :sample_rate, :alpha_channels, :bits_per_sample, :resolution_unit,
           :samples_per_pixel, :y_resolution, :x_resolution, :file_date_created
         ]
-        self.characterization_proxy = :original_file
+        self.characterization_proxy = Hyrax.config.characterization_proxy
 
         delegate(*characterization_terms, to: :characterization_proxy)
 
@@ -36,6 +43,7 @@ module Hyrax
           !characterization_proxy.is_a?(NullCharacterizationProxy)
         end
 
+        # we added this function
         def file_date_created
           @date_created ||= characterization_proxy.date_created
         end
@@ -56,6 +64,19 @@ module Hyrax
 
         def mime_type; end
       end
+
+      # Add Alpha Channels to the Schema
+      class AlphaChannelsSchema < ActiveTriples::Schema
+        property :alpha_channels, predicate: ::RDF::URI.new('http://vocabulary.samvera.org/ns#alphaChannels')
+      end
+
+      ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas << AlphaChannelsSchema
+
+      # Add file_set_id for Valkyrie support.
+      class FileSetIdSchema < ActiveTriples::Schema
+        property :file_set_id, predicate: ::RDF::URI.new('http://vocabulary.samvera.org/ns#fileSetId')
+      end
+      ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas << FileSetIdSchema
     end
   end
 end
