@@ -5,8 +5,10 @@ module Hyrax
       # Define collection specific filter facets.
       def self.configure_facets
         configure_blacklight do |config|
-          config.add_facet_field solr_name("admin_set", :facetable), limit: 5
-          config.add_facet_field solr_name('member_of_collections', :symbol), limit: 5
+          # We changed the search builder class
+          config.search_builder_class = TuftsMyWorksSearchBuilder
+          config.add_facet_field "admin_set_sim", limit: 5
+          config.add_facet_field "member_of_collections_ssim", limit: 5
         end
       end
       configure_facets
@@ -14,12 +16,7 @@ module Hyrax
       class_attribute :create_work_presenter_class
       self.create_work_presenter_class = Hyrax::SelectTypeListPresenter
 
-      # Search builder for a list of works that belong to me
-      # Override of Blacklight::RequestBuilders
-      def search_builder_class
-        TuftsMyWorksSearchBuilder
-      end
-
+      # We added this function
       def suppressed_to_status(value)
         case value
         when "false"
@@ -41,6 +38,7 @@ module Hyrax
         super
       end
 
+      # We added this function
       def create
         super
       end
