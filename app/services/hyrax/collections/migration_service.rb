@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 module Hyrax
   module Collections
+    ##
+    # @deprecated this migration tool should no longer be useful after Hyrax 2.1.0; Removal is planned for 4.0
     # Responsible for migrating legacy collections.  Legacy collections are those created before Hyrax 2.1.0 and
     # are identified by the lack of the collection having a collection type gid.
     class MigrationService
@@ -9,7 +11,9 @@ module Hyrax
       # Migrate all legacy collections to extended collections with collection type assigned.  Legacy collections are those
       # created before Hyrax 2.1.0 and are identified by the lack of the collection having a collection type gid.
       def self.migrate_all_collections
-        Rails.logger.info "*** Migrating #{::Collection.count} collections with limited reindexing"
+        Deprecation.warn('This migration tool will be removed in Hyrax 4.0.0.')
+
+        Rails.logger.info "*** Migrating #{::Collection.count} collections"
         ::Collection.all.each do |col|
           col.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
           migrate_collection(col)
@@ -31,13 +35,14 @@ module Hyrax
       # @param collection [::Collection] collection object to be migrated
       def self.migrate_collection(collection)
         return if collection.collection_type_gid.present? # already migrated
-        collection.collection_type_gid = Hyrax::CollectionType.find_or_create_default_collection_type.gid
+        collection.collection_type_gid = Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id
         create_permissions(collection)
         collection.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
         collection.save
       end
       private_class_method :migrate_collection
 
+      ##
       # @api private
       #
       # Migrate a single adminset to grant depositors and viewers read access to the admin set unless the grant is for
@@ -48,7 +53,8 @@ module Hyrax
       def self.migrate_adminset(adminset)
         Hyrax::PermissionTemplateAccess.find_or_create_by(permission_template_id: adminset.permission_template.id,
                                                           agent_type: "group", agent_id: "admin", access: "manage")
-        adminset.reset_access_controls!
+
+        adminset.permission_template.reset_access_controls_for(collection: adminset)
       end
       private_class_method :migrate_adminset
 
@@ -58,6 +64,8 @@ module Hyrax
       # access created and associated with the collection.  Any collection without collection type gid as nil or assigned
       # the default collection type are ignored.
       def self.repair_migrated_collections
+        Deprecation.warn('This migration tool will be removed in Hyrax 4.0.0.')
+
         Rails.logger.info "*** Repairing migrated collections"
         ::Collection.all.each do |col|
           repair_migrated_collection(col)
@@ -76,11 +84,11 @@ module Hyrax
       #
       # @param collection [::Collection] collection object to be migrated/repaired
       def self.repair_migrated_collection(collection)
-        return if collection.collection_type_gid.present? && collection.collection_type_gid != Hyrax::CollectionType.find_or_create_default_collection_type.gid
-        collection.collection_type_gid = Hyrax::CollectionType.find_or_create_default_collection_type.gid
+        return if collection.collection_type_gid.present? && collection.collection_type_gid != Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id
+        collection.collection_type_gid = Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id
         permission_template = Hyrax::PermissionTemplate.find_by(source_id: collection.id)
         if permission_template.present?
-          collection.reset_access_controls!
+          permission_template.reset_access_controls_for(collection: collection, interpret_visibility: true)
         else
           create_permissions(collection)
         end
