@@ -23,15 +23,6 @@
     <div class="alert alert-warning" role="alert"><%= t('hyrax.collections.show.no_visible_parent_collections') %></div>
 <% else %>
   <% draw_tree(presenter) %>
-<% if false %>
-  <% presenter.parent_collections.documents.each do |document| %>
-    <ul>
-      <li>
-        <strong><%= link_to document, [hyrax, document], id: "src_copy_link_#{document.id}" %></strong>
-        <strong><%= presenter.class %></strong>
-      </li>
-    </ul>
-  <% end %>
 <% end %>
   <div class="row">
     <%= render 'hyrax/collections/paginate', solr_response: presenter.parent_collections, page_param_name: :parent_collection_page %>

@@ -22,14 +22,8 @@
 <% if presenter.total_parent_collections <= 0 %>
   <div class="alert alert-warning" role="alert"><%= t('hyrax.collections.show.no_visible_parent_collections') %></div>
 <% else %>
-<% draw_tree(presenter) %>
-<% if false %>
-  <ul class="collections-list">
-    <% presenter.parent_collections.documents.each do |document| %>
-      <%= render 'hyrax/dashboard/collections/show_parent_collection_row', id: presenter.id, document: document %>
-    <% end %>
-  </ul>
-<% end %>
+  <% # Override Note: We are replacing this sections with what is returned by draw_tree %>
+  <% draw_tree(presenter) %>
   <div class="row">
     <%= render 'hyrax/collections/paginate', solr_response: presenter.parent_collections, page_param_name: :parent_collection_page %>
   </div>
