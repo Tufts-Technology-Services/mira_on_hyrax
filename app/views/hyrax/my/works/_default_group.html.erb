@@ -1,3 +1,4 @@
+<fieldset>
 <table class="table table-striped works-list">
   <caption class="sr-only"><%= t("hyrax.dashboard.my.sr.listing") %> <%= application_name %></caption>
   <% unless params[:display_type] == 'list' %>
@@ -22,3 +23,4 @@
 <script>
  Tufts.activateDataTable({selector: '.works-list', paging: false})
 </script>
+</fieldset>

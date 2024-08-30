@@ -1,13 +1,17 @@
+<% # Override Note: replaced collections-list-table collection-works-table with panel %>
 <table class="table table-striped panel">
-  <caption class="sr-only">List of items in this collection</caption>
+  <caption class="sr-only"><%= t('hyrax.dashboard.collections.show_document_list.list_items_in_collection') %></caption>
   <thead>
   <tr>
     <th>&nbsp;</th>
-    <th>Title</th>
+    <th class="title-column"><%= t('hyrax.dashboard.collections.show_document_list.title') %></th>
+    <% # Override Note: TODO change this local to Date Uploaded %>
+    <!-- <th><%= t('hyrax.dashboard.collections.show_document_list.date_added') %></th>  -->
     <th>Date Uploaded</th>
-    <th>Visibility</th>
+    <% # Override Note: remove Owner talbe head %>
+    <th><%= t('hyrax.dashboard.collections.show_document_list.visibility') %></th>
     <% if current_user %>
-      <th>Action</th>
+      <th><%= t('hyrax.dashboard.collections.show_document_list.action') %></th>
     <% end %>
   </tr>
   </thead>

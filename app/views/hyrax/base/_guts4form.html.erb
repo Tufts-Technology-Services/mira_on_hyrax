@@ -1,4 +1,5 @@
 <% # we will yield to content_for for each tab, e.g. :files_tab %>
+<% # TODO: Not passing tabs local param to this partial is deprecated and the tabs param will be required in Hyrax 3.0 Need to review this throughly %>
 <% tabs ||= %w[metadata files relationships] # default tab order %>
 <div class="row">
   <div class="col-xs-12 col-sm-8">
