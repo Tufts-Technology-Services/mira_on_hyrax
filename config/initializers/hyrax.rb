@@ -21,7 +21,6 @@ Hyrax.config do |config|
   # avoid clashes if you plan to use the default (dct:isPartOf) for other relations.
   config.admin_set_predicate = "admin_set_member"
 
-
   # Email recipient of messages sent via the contact form
   # config.contact_email = "repo-admin@example.org"
 
