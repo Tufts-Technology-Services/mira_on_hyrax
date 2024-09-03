@@ -1,8 +1,10 @@
+<% # Override Note: We added this unless %>
 <% unless presenter.description.nil? %>
   <% presenter.description.each do |description| %>
     <p class="work_description"><%= iconify_auto_link(description.html_safe) %></p>
   <% end %>
 <% end %>
+<% # Override Note: We added modified-info %>
 <ul class="modified-info">
     <li>
         <span class="modified-info__label">Ingested</span>

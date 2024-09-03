@@ -5,6 +5,7 @@
 # Hyrax.config.admin_set_predicate, and we have opened a ticket in Hyrax to
 # address that (See https://github.com/samvera/hyrax/issues/2405). In the meantime,
 # we have to hard-code the new value.
+# TODO: review this more, the overrides the community says they resolved the issue but count_files does not seem to be changed
 module Hyrax
   # Returns AdminSets that the current user has permission to use.
   class AdminSetService
@@ -35,8 +36,8 @@ module Hyrax
       admin_sets = search_results(access)
       ids = admin_sets.map(&:id).join(',')
       query = "{!terms f=#{join_field}}#{ids}"
-      results = ActiveFedora::SolrService.instance.conn.get(
-        ActiveFedora::SolrService.select_path,
+      results = Hyrax::SolrService.instance.conn.get(
+        Hyrax::SolrService.select_path,
         params: { fq: query,
                   'facet.field' => join_field }
       )

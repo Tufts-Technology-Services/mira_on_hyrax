@@ -59,6 +59,7 @@
       <% if @presenter.collection_type_is_nestable? && @presenter.total_parent_collections > 0 %>
           <div class="hyc-blacklight hyc-bl-title">
             <h2>
+              <% # Override Note: removed @presenter.total_parent_collections %>
               <%= t('.parent_collection_header') %>
             </h2>
           </div>

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# TODO: review and update this override
 module Hyrax
   module CharacterizationBehavior
     extend ActiveSupport::Concern
