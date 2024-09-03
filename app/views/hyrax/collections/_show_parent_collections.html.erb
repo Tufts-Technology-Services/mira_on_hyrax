@@ -22,6 +22,7 @@
 <% if presenter.total_parent_collections <= 0 %>
     <div class="alert alert-warning" role="alert"><%= t('hyrax.collections.show.no_visible_parent_collections') %></div>
 <% else %>
+  <% # Override Note: We are replacing this sections with what is returned by draw_tree %>
   <% draw_tree(presenter) %>
 <% end %>
   <div class="row">
