@@ -21,7 +21,7 @@ module Hyrax
       # Todo: if lines unneeded delete file
       @status_list = Hyrax::Workflow::StatusListService.new(self, "-workflow_state_name_ssim:#{deposited_workflow_state_name} AND createdby_tesim:#{Contribution::SELFDEP}")
       @published_list = Hyrax::Workflow::StatusListService.new(self, "workflow_state_name_ssim:#{deposited_workflow_state_name} AND createdby_tesim:#{Contribution::SELFDEP}")
-      
+
       assign_action_objects_params
       @response = WorkflowResponse.new(actionable_objects.to_a, actionable_objects.total_count, current_page, per_page, under_review?)
     end
