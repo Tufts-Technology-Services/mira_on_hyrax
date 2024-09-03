@@ -82,7 +82,7 @@ RSpec.feature 'deposit and publication', :clean, :workflow do
 
       # The admin user comments on the work
       subject = Hyrax::WorkflowActionInfo.new(work, publishing_user)
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("comment_only", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("comment_only", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: "This is a comment")
       expect(work.to_sipity_entity.reload.workflow_state_name).to eq "published"
 
