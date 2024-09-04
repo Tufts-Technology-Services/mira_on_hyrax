@@ -9,8 +9,8 @@ module Tufts
 
     def setup
       # temp remove this
-      # set_default_workflow
-      # grant_publish_role_to_admins
+      set_default_workflow
+      grant_publish_role_to_admins
     end
 
     def set_default_workflow
