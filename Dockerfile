@@ -37,6 +37,8 @@ RUN apt-get remove -y imagemagick
 
 RUN apt-get install -y wget
 
+# RUN t=$(mktemp) && wget 'https://dist.1-2.dev/imei.sh' -qO "$t" && bash "$t" && rm "$t" # https://github.com/SoftCreatR/imei#one-step-automated-install
+
 # fetch clamav local database
 # initial update of av databases
 RUN freshclam
