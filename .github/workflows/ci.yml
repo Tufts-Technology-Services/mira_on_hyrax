@@ -56,6 +56,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler: "2.2.26"
+    # no sure about this
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y libmagickwand-dev imagemagick
     # TODO: Tempoary remove this update untill ruby 3
     # - name: Update rubygems
     #   run: |
