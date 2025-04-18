@@ -11,12 +11,11 @@ module Hyrax
         super
       end
 
-      ##
-      # @return [TrueClass]nnn
-      def attach_files(files, env)
+      def attach_files(files, curation_concern, attributes)
         return true if files.blank?
-        attributes = env.attributes.merge(file_type_attributes)
-        AttachTypedFilesToWorkJob.perform_later(env.curation_concern, files, attributes.to_h.symbolize_keys)
+        attributes = attributes.merge(file_type_attributes)
+        # TODO: see if AttachTypedFilesToWorkJob needs touch ups
+        AttachTypedFilesToWorkJob.perform_later(curation_concern, files, attributes.to_h.symbolize_keys)
         true
       end
 
