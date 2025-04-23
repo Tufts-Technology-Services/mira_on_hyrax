@@ -8,7 +8,7 @@ class AttachTypedFilesToWorkJob < AttachFilesToWorkJob
     user = User.find_by_user_key(work.depositor) # BUG? file depositor ignored
     work_permissions = work.permissions.map(&:to_hash)
     uploaded_files.each do |uploaded_file|
-      file_set_attributes = file_set_attrs(work_attributes, uploaded_file)    
+      file_set_attributes = file_set_attrs(work_attributes, uploaded_file)
       metadata = visibility_attributes(work_attributes, file_set_attributes)
       actor = Hyrax::Actors::FileSetActor.new(FileSet.create, user)
       actor.create_metadata(metadata)
