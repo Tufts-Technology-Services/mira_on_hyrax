@@ -13,7 +13,7 @@ module Hyrax
       cols = nested_collection_pathnames
       list_of_lists = []
       enhanced_id_list = []
-      cols.each do |col|
+      cols&.each do |col|
         parsed_ids = col.split('/')
         parsed_ids.delete(id)
         enhanced_id_list = []

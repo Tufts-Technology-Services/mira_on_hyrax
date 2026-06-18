@@ -32,8 +32,8 @@ RSpec.describe Hyrax::Actors::HandleAssuranceActor, :clean, :workflow do
 
   describe '#create' do
     before do
-      object
       ActiveJob::Base.queue_adapter = :test
+      object
     end
 
     context 'before published' do
@@ -96,8 +96,8 @@ RSpec.describe Hyrax::Actors::HandleAssuranceActor, :clean, :workflow do
 
   describe '#update' do
     before do
-      object
       ActiveJob::Base.queue_adapter = :test
+      object
     end
 
     context 'before published' do

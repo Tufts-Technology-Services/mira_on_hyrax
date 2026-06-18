@@ -28,13 +28,12 @@ ActiveJob::Uniqueness.configure do |config|
   #
   # config.redlock_servers = [ENV.fetch('REDIS_URL', 'redis://localhost:6379')]
 
-  auth = if Rails.application.config_for(:redis)["password"]
-           ":" + Rails.application.config_for(:redis)["password"] + "@"
-         else
-           ""
-         end
+  redis_config = Rails.application.config_for(:redis)
+  auth = redis_config["password"] ? ":" + redis_config["password"] + "@" : ""
+  host = ENV.fetch('REDIS_HOST', redis_config.fetch("host", "localhost"))
+  port = ENV.fetch('REDIS_PORT', redis_config.fetch("port", "6379"))
 
-  config.redlock_servers = [ENV.fetch('REDIS_URL', 'redis://' + auth + 'localhost:6379')]
+  config.redlock_servers = [ENV.fetch('REDIS_URL', "redis://#{auth}#{host}:#{port}")]
 
   # Custom options for Redlock.
   # Read more at https://github.com/leandromoreira/redlock-rb#redlock-configuration

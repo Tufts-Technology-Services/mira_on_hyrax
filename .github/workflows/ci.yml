@@ -141,7 +141,9 @@ jobs:
       run: |
         bundle exec rails assets:precompile &> /dev/null
     - name: Run tests
-      run: xvfb-run -a bundle exec rake spec
+      run: |
+        docker compose --env-file config/env.intel.conf up -d test
+        docker compose --env-file config/env.intel.conf exec -T test bundle exec rake spec
       env:
         RAILS_ENV: test
         TMPDIR: /tmp
