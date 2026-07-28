@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 require 'iiif_manifest'
 
+# TODO: figure out why we overode this file and mark it up, add %US% next to what we changed
+# TODO: Remove this file, or figure out how it was overriden 
+# Mike remebered TuftsNormalizer and calls sanitize on some of the fields, people in Tisch at the time felt it was a security vulnerability to be able to inject html into a description of an object
+
 module Hyrax
   module WorksControllerBehavior
     extend ActiveSupport::Concern
     include Blacklight::Base
     include Blacklight::AccessControls::Catalog
+    # Added the line below
     include Tufts::Normalizer
 
     included do
@@ -285,6 +290,7 @@ module Hyrax
                    else
                      {}
                    end
+      # %US% we added these 3 sanitation line below
       attributes = attributes.to_unsafe_h
       attributes = sanitize_input(attributes)
       attributes = normalize_whitespace(attributes)
