@@ -6,7 +6,15 @@ class CreateDerivativesJob
   # Temporary debug wrapper around Hyrax's derivative job.
   # Enable with DERIVATIVE_DEBUG=1 on the worker process.
   def perform(file_set, file_id, filepath = nil)
-    derivative_debug("job start file_set_id=#{file_set.id} file_id=#{file_id.inspect} filepath=#{filepath.inspect} filepath_exists=#{filepath && File.exist?(filepath)} mime_type=#{file_set.mime_type.inspect}")
+    derivative_debug("entered perform")
+    derivative_debug("raw args file_id=#{file_id.inspect} filepath=#{filepath.inspect}")
+    derivative_debug("before filepath File.exist?")
+    derivative_debug("filepath_exists=#{filepath && File.exist?(filepath)}")
+    derivative_debug("before file_set.id")
+    derivative_debug("file_set_id=#{file_set.id}")
+    derivative_debug("before file_set.mime_type")
+    derivative_debug("mime_type=#{file_set.mime_type.inspect}")
+    derivative_debug("before video?/enable_ffmpeg check")
     return if file_set.video? && !Hyrax.config.enable_ffmpeg
 
     derivative_debug("before find_or_retrieve")
