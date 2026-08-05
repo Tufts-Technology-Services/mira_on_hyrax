@@ -31,25 +31,13 @@ module Hydra::Derivatives::Processors
 
     def encode_file(file_suffix, options)
       temp_file_name = output_file(file_suffix)
-      derivative_debug("encode_file start format=#{file_suffix} source_path=#{source_path.inspect} source_exists=#{File.exist?(source_path)} temp_file=#{temp_file_name.inspect} directives=#{directives.inspect} options=#{options.inspect}")
       self.class.encode(source_path, options, temp_file_name)
-      derivative_debug("ffmpeg complete temp_file=#{temp_file_name.inspect} temp_exists=#{File.exist?(temp_file_name)} temp_size=#{file_size(temp_file_name)}")
       output_file_service.call(File.open(temp_file_name, 'rb'), directives)
-      derivative_debug("output_file_service complete url=#{directives[:url].inspect}")
       File.unlink(temp_file_name)
-      derivative_debug("temp_file removed temp_file=#{temp_file_name.inspect}")
     end
 
     def output_file(file_suffix)
       Dir::Tmpname.create(['sufia', ".#{file_suffix}"], Hydra::Derivatives.temp_file_base) {}
-    end
-
-    def derivative_debug(message)
-      Rails.logger.info("[DERIVATIVE_DEBUG] #{message}") 
-    end
-
-    def file_size(path)
-      File.exist?(path) ? File.size(path) : 'missing'
     end
 
     module ClassMethods
@@ -74,10 +62,8 @@ module Hydra::Derivatives::Processors
 
       def execute_without_timeout(command, context) # rubocop:disable Metrics/MethodLength
         err_str = "".dup
-        derivative_debug("command=#{command}")
         stdin, stdout, stderr, wait_thr = popen3(command)
         context[:pid] = wait_thr[:pid]
-        derivative_debug("pid=#{context[:pid]}")
         files = [stderr, stdout]
         stdin.close
 
@@ -109,17 +95,12 @@ module Hydra::Derivatives::Processors
         stdout.close
         stderr.close
         exit_status = wait_thr.value
-        derivative_debug("exit_status=#{exit_status}")
 
         raise "Unable to execute command \"#{command}\". Exit code: #{exit_status}\nError message: #{err_str}" unless exit_status.success?
       end
 
       def all_eof?(files)
         files.find { |f| !f.eof }.nil?
-      end
-
-      def derivative_debug(message)
-        Rails.logger.info("[DERIVATIVE_DEBUG] #{message}") if ENV['DERIVATIVE_DEBUG'] == '1'
       end
     end
   end
