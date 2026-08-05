@@ -74,21 +74,26 @@ jobs:
           sudo apt-get install -y ant
         fi
 
-        curl --fail --location --output $HOME/fits-1.0.5.zip https://codeload.github.com/harvard-lts/fits/legacy.zip/refs/tags/1.0.5
-        unzip $HOME/fits-1.0.5.zip -d $HOME
-        mv $HOME/harvard-lts-fits-* $HOME/fits-src-1.0.5
+        curl --fail --location --output "$HOME/fits-1.0.5.zip" https://codeload.github.com/harvard-lts/fits/legacy.zip/refs/tags/1.0.5
+        unzip "$HOME/fits-1.0.5.zip" -d "$HOME"
+        FITS_SRC=$(find "$HOME" -maxdepth 1 -type d \( -name 'harvard-lts-fits-*' -o -name 'fitstool-fits-*' \) -print -quit)
+        test -n "$FITS_SRC"
+        mv "$FITS_SRC" "$HOME/fits-src-1.0.5"
 
-        pushd $HOME/fits-src-1.0.5
+        pushd "$HOME/fits-src-1.0.5"
         ant compile-create-jar
-        mkdir -p $HOME/fits-1.0.5/lib
-        cp -R xml tools $HOME/fits-1.0.5/
-        cp -R lib/* $HOME/fits-1.0.5/lib/
-        cp lib-fits/fits-1.0.5.jar $HOME/fits-1.0.5/lib/
-        cp log4j.properties cpappend.bat fits.bat fits.sh fits-env.sh fits-ngserver.sh version.properties $HOME/fits-1.0.5/
-        cp *.md $HOME/fits-1.0.5/
+        mkdir -p "$HOME/fits-1.0.5/lib"
+        cp -R xml tools "$HOME/fits-1.0.5/"
+        cp -R lib/* "$HOME/fits-1.0.5/lib/"
+        cp lib-fits/fits-1.0.5.jar "$HOME/fits-1.0.5/lib/"
+        cp log4j.properties cpappend.bat fits.bat fits.sh fits-env.sh fits-ngserver.sh version.properties "$HOME/fits-1.0.5/"
+        cp *.md "$HOME/fits-1.0.5/"
         popd
 
-        chmod u+x $HOME/fits-1.0.5/fits.sh
+        chmod u+x "$HOME/fits-1.0.5/fits.sh"
+        sudo mkdir -p /opt/fits
+        sudo cp -R "$HOME/fits-1.0.5/." /opt/fits/
+        sudo chmod u+x /opt/fits/fits.sh
     - name: Set up MySQL
       run: |
         sudo systemctl enable mysql.service
