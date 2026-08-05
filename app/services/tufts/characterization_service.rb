@@ -5,6 +5,9 @@ require 'fastimage'
 
 module Tufts
   class CharacterizationService
+    EXCEL_MIME_TYPE = "application/vnd.ms-excel"
+    WAV_MIME_TYPES = ["audio/wav", "audio/x-wav", "audio/x-wave"].freeze
+
     FIELDS = {
       resolution_unit: [:ifd0, 'ResolutionUnit'],
       bits_per_sample: [:ifd0, 'BitsPerSample'],
@@ -26,8 +29,10 @@ module Tufts
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     def characterize
+      correct_misidentified_wav
+
       if !@object.mime_type.nil? && @object.mime_type == "TBD"
-        mimetype = `file --brief --mime-type - < #{Shellwords.shellescape(@source)}`.strip
+        mimetype = local_mime_type
         if mimetype == "application/octet-stream"
           # if we don't characterize this as a video it won't get derivatives
           type_obj = MimeMagic.by_path(@source)
@@ -50,6 +55,21 @@ module Tufts
     # Calls the Vendored Exif Tool with appriorate arguments and returns the hash
     def exif_data
       Exiftool.new(@source, '-a -u -g1').to_hash
+    end
+
+    def correct_misidentified_wav
+      return unless @object.mime_type == EXCEL_MIME_TYPE
+      return unless File.extname(@source).casecmp(".wav").zero?
+
+      mimetype = local_mime_type
+      return unless WAV_MIME_TYPES.include?(mimetype)
+
+      append_property_value("mime_type", mimetype)
+      append_property_value("format_label", ["Waveform Audio"]) if @object.respond_to?(:format_label=)
+    end
+
+    def local_mime_type
+      `file --brief --mime-type - < #{Shellwords.shellescape(@source)}`.strip
     end
 
     def map_fields_to_properties(exif_data)
