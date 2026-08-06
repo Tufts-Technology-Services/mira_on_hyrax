@@ -36,4 +36,18 @@ RSpec.describe Tufts::ContributeCollections, :clean do
       expect(faculty_scholarship_collection.finding_aid).to eq(['https://archives.tufts.edu/repositories/2/resources/100'])
     end
   end
+
+  context "when the collection exists in Fedora but is missing from Solr" do
+    let(:collection) { instance_double(Collection) }
+
+    before do
+      allow(Collection).to receive(:find).with("2j62s484w").and_return(collection)
+    end
+
+    it "finds the collection without creating it again" do
+      expect(cc).not_to receive(:create_collection)
+
+      expect(cc.collection_for_work_type(FacultyScholarship)).to eq(collection)
+    end
+  end
 end
