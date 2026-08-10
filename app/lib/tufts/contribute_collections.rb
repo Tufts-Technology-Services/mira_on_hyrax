@@ -13,12 +13,7 @@ module Tufts
     end
 
     def make_seed_data_hash
-      seed_hash = {}
-      SEED_DATA.each do |c|
-        data_id = c[:id]
-        seed_hash[data_id] = c
-      end
-      seed_hash
+      SEED_DATA.index_by { |collection| collection[:id] }
     end
 
     def self.create
