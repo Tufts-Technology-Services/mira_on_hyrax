@@ -13,12 +13,7 @@ module Tufts
     end
 
     def make_seed_data_hash
-      seed_hash = {}
-      SEED_DATA.each do |c|
-        data_id = c[:id]
-        seed_hash[data_id] = c
-      end
-      seed_hash
+      SEED_DATA.index_by { |collection| collection[:id] }
     end
 
     def self.create
@@ -38,9 +33,12 @@ module Tufts
     # re-used, and re-create the collection object.
     # @param [String] call_number
     # @return [Collection]
-    def find_or_create_collection(data_id, default)
-      col = Collection.where(id: data_id)
-      create_collection(data_id, default) if col.empty?
+    def find_or_create_collection(data_id, default = nil)
+      collection = find_collection(data_id)
+      return collection if collection
+
+      default ||= Hyrax::CollectionType.find_or_create_default_collection_type
+      create_collection(data_id, default)
     end
 
     # @param [String] data_id
@@ -74,12 +72,7 @@ module Tufts
     def collection_for_work_type(work_type)
       data_id = @seed_data.select { |_key, hash| hash[:work_types].include? work_type }.keys.first
 
-      cols = Collection.where(id: data_id)
-      if cols.empty?
-        create_collection(data_id)
-      else
-        cols.first
-      end
+      find_or_create_collection(data_id)
     end
 
     SEED_DATA = [
@@ -131,5 +124,13 @@ module Tufts
         work_types: [GradScholarship]
       }
     ].freeze
+
+  private
+
+    def find_collection(data_id)
+      Collection.find(data_id)
+    rescue ActiveFedora::ObjectNotFoundError
+      nil
+    end
   end
 end
