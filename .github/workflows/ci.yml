@@ -69,31 +69,16 @@ jobs:
 
     - name: Install FITS
       run: |
-        if ! command -v ant >/dev/null; then
-          sudo apt-get update
-          sudo apt-get install -y ant
-        fi
-
-        curl --fail --location --output "$HOME/fits-1.0.5.zip" https://codeload.github.com/harvard-lts/fits/legacy.zip/refs/tags/1.0.5
-        unzip "$HOME/fits-1.0.5.zip" -d "$HOME"
-        FITS_SRC=$(find "$HOME" -maxdepth 1 -type d \( -name 'harvard-lts-fits-*' -o -name 'fitstool-fits-*' \) -print -quit)
-        test -n "$FITS_SRC"
-        mv "$FITS_SRC" "$HOME/fits-src-1.0.5"
-
-        pushd "$HOME/fits-src-1.0.5"
-        ant compile-create-jar
-        mkdir -p "$HOME/fits-1.0.5/lib"
-        cp -R xml tools "$HOME/fits-1.0.5/"
-        cp -R lib/* "$HOME/fits-1.0.5/lib/"
-        cp lib-fits/fits-1.0.5.jar "$HOME/fits-1.0.5/lib/"
-        cp log4j.properties cpappend.bat fits.bat fits.sh fits-env.sh fits-ngserver.sh version.properties "$HOME/fits-1.0.5/"
-        cp *.md "$HOME/fits-1.0.5/"
-        popd
-
-        chmod u+x "$HOME/fits-1.0.5/fits.sh"
+        FITS_VERSION=1.5.0
+        curl --fail --location --retry 3 --output "$RUNNER_TEMP/fits-${FITS_VERSION}.zip" "https://github.com/harvard-lts/fits/releases/download/${FITS_VERSION}/fits-${FITS_VERSION}.zip"
         sudo mkdir -p /opt/fits
-        sudo cp -R "$HOME/fits-1.0.5/." /opt/fits/
+        sudo unzip -q "$RUNNER_TEMP/fits-${FITS_VERSION}.zip" -d /opt/fits
         sudo chmod u+x /opt/fits/fits.sh
+        /opt/fits/fits.sh -v
+        if ! /opt/fits/fits.sh -i spec/fixtures/files/pdf-sample.pdf > "$RUNNER_TEMP/fits-smoke.xml" 2> "$RUNNER_TEMP/fits-smoke.err"; then
+          cat "$RUNNER_TEMP/fits-smoke.err"
+          exit 1
+        fi
     - name: Set up MySQL
       run: |
         sudo systemctl enable mysql.service

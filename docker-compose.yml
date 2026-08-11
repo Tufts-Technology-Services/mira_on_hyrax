@@ -47,7 +47,7 @@ services:
       - DB_USERNAME=postgres
       - DERIVATIVES_PATH=/data/tmp/derivatives
       - FEDORA_URL=http://fcrepo-dev:8080/rest
-      - FITS_PATH=/opt/fits-1.0.5/fits.sh
+      - FITS_PATH=/opt/fits/fits.sh
       - RAILS_ENV=development
       - RAILS_LOG_TO_STDOUT=true
       - REDIS_HOST=redis-dev
@@ -101,7 +101,7 @@ services:
       - DB_USERNAME=postgres
       - DERIVATIVES_PATH=/data/tmp/derivatives
       - FEDORA_URL=http://fcrepo-test:8080/rest
-      - FITS_PATH=/opt/fits-1.0.5/fits.sh
+      - FITS_PATH=/opt/fits/fits.sh
       - RAILS_ENV=test
       - REDIS_HOST=redis-test
       - REDIS_PORT=6379
