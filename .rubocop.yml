@@ -65,6 +65,7 @@ RSpec/DescribeClass:
 RSpec/AnyInstance:
   Exclude:
     - spec/controllers/deposit_types_controller_spec.rb
+    - spec/services/tufts/characterization_service_spec.rb
     - spec/lib/deposit_types_controller_spec.rb
 RSpec/ExampleLength:
   Exclude:

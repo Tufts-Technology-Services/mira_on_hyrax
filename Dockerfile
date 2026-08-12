@@ -31,7 +31,9 @@ RUN freshclam
 # install FITS for file characterization
 RUN mkdir -p /opt/fits && \
     curl -fSL -o /opt/fits/fits-1.5.0.zip https://github.com/harvard-lts/fits/releases/download/1.5.0/fits-1.5.0.zip && \
-    cd /opt/fits && unzip fits-1.5.0.zip && chmod +X fits.sh && rm fits-1.5.0.zip
+    cd /opt/fits && unzip fits-1.5.0.zip && \
+    sed -i '/edu\.harvard\.hul\.ois\.fits\.tools\.mediainfo\.MediaInfo/d' xml/fits.xml && \
+    chmod +X fits.sh && rm fits-1.5.0.zip
 ENV PATH /opt/fits:$PATH
 
 # Increase stack size limit to help working with large works

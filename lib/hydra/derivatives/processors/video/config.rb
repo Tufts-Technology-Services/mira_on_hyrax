@@ -75,7 +75,7 @@ module Hydra::Derivatives::Processors::Video
     # min(1080,ih) means use 1080 or original height, whichever is smaller
     # -2 is match width to height if changing height and preserve aspect ratio
     def default_video_size_attributes
-      "-vf \"scale=w=1280:h=720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2\""
+      "-vf \"scale=w=1280:h=720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,format=yuv420p\""
     end
 
     def default_audio_attributes
