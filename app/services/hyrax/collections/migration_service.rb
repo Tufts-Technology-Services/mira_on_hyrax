@@ -15,6 +15,7 @@ module Hyrax
 
         Rails.logger.info "*** Migrating #{::Collection.count} collections"
         ::Collection.all.each do |col|
+          # This line below is what we added for the override
           col.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
           migrate_collection(col)
           Rails.logger.info "  migrating collection - id: #{col.id}, title: #{col.title}"
@@ -37,6 +38,7 @@ module Hyrax
         return if collection.collection_type_gid.present? # already migrated
         collection.collection_type_gid = Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id
         create_permissions(collection)
+        # This line below is what we added for the override
         collection.reindex_extent = Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX
         collection.save
       end
