@@ -1,5 +1,6 @@
 <%# container for all documents in index view -%>
 <div id="search-results">
+  <%# turned below ul to ol, and removed list-unstyled class -%>
   <ol class="catalog" start="<%= document_counter_with_offset(0) %>">
     <%= render documents, as: :document %>
   </ol>
