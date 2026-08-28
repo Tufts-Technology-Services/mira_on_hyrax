@@ -49,6 +49,16 @@ module Hyrax
       def managed_collections_count
         @managed_collection_count = Hyrax::Collections::ManagedCollectionsService.managed_collections_count(scope: self)
       end
+
+
+      #  Maybe we change the query paramaters to take into account visibility
+      # You can override this method if you need to provide additional
+      # inputs to the search builder. For example:
+      #   search_field: 'all_fields'
+      # @return <Hash> the inputs required for the collection member search builder
+      def params_for_query
+        params.merge(q: params[:cq])
+      end
     end
   end
 end
