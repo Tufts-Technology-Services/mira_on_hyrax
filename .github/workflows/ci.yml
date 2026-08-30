@@ -55,7 +55,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
-        bundler: "2.2.26"
+        bundler: "2.2.32"
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     # no sure about this
     - name: Install system dependencies
