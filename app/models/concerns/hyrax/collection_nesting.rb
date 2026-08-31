@@ -24,7 +24,7 @@ module Hyrax
 
       def after_update_nested_collection_relationship_indices
         @during_save = false
-        reindex_nested_relationships_for(id: id, extent: reindex_extent)
+        enqueue_nested_relationship_reindex_for(id: id, extent: reindex_extent)
         # rubocop:disable Style/GuardClause
         if self.class.to_s == "Collection"
           children = find_children_of(destroyed_id: id)
@@ -82,6 +82,12 @@ module Hyrax
     end
 
     private
+
+    def enqueue_nested_relationship_reindex_for(id:, extent:)
+      NestedRelationshipReindexJob.perform_later(id, extent)
+    rescue ActiveJob::Uniqueness::JobNotUnique
+      Rails.logger.warn "Tried to queue non-unique NestedRelationshipReindex job for #{id}"
+    end
 
     def reindex_nested_relationships_for(id:, extent:)
       Hyrax.config.nested_relationship_reindexer.call(id: id, extent: extent)
