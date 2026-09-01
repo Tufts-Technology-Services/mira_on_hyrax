@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable RSpec/ExampleLength
 require 'rails_helper'
 
 RSpec.describe Hyrax::CollectionNesting do
@@ -79,3 +80,4 @@ RSpec.describe Hyrax::CollectionNesting do
     end
   end
 end
+# rubocop:enable RSpec/ExampleLength
