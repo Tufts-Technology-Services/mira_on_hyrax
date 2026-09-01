@@ -34,11 +34,7 @@ module Hyrax
             ids << child.id
           end
 
-          begin
-            IndexChildrenJob.perform_later(ids)
-          rescue ActiveJob::Uniqueness::JobNotUnique
-            Rails.logger.warn "Tried to queue non-unique IndexChildren job for #{ids}"
-          end
+          enqueue_child_nested_relationship_reindex_for(ids)
         end
       end
 
@@ -92,6 +88,14 @@ module Hyrax
       NestedRelationshipReindexJob.perform_later(id, extent)
     rescue ActiveJob::Uniqueness::JobNotUnique
       Rails.logger.warn "Tried to queue non-unique NestedRelationshipReindex job for #{id}"
+    end
+
+    def enqueue_child_nested_relationship_reindex_for(ids)
+      ids.each_slice(IndexChildrenJob::BATCH_SIZE) do |child_ids|
+        IndexChildrenJob.perform_later(child_ids)
+      rescue ActiveJob::Uniqueness::JobNotUnique
+        Rails.logger.warn "Tried to queue non-unique IndexChildren job for #{child_ids}"
+      end
     end
 
     def reindex_nested_relationships_for(id:, extent:)

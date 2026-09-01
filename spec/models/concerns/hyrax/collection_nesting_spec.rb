@@ -61,4 +61,21 @@ RSpec.describe Hyrax::CollectionNesting do
       record.after_update_nested_collection_relationship_indices
     end
   end
+
+  describe '#enqueue_child_nested_relationship_reindex_for' do
+    it 'queues child reindexing in bounded batches' do
+      ids = Array.new(IndexChildrenJob::BATCH_SIZE + 1) { |index| "child-#{index}" }
+      allow(IndexChildrenJob).to receive(:perform_later)
+
+      record.send(:enqueue_child_nested_relationship_reindex_for, ids)
+
+      expect(IndexChildrenJob).to have_received(:perform_later).twice
+      expect(IndexChildrenJob)
+        .to have_received(:perform_later)
+        .with(ids.first(IndexChildrenJob::BATCH_SIZE))
+      expect(IndexChildrenJob)
+        .to have_received(:perform_later)
+        .with([ids.last])
+    end
+  end
 end
