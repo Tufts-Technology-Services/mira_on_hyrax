@@ -20,15 +20,30 @@ RSpec.describe Hyrax::CollectionNesting do
       def save
         _run_save_callbacks { true }
       end
+
+      def to_solr
+        { 'id' => id }
+      end
     end
   end
 
   before do
     stub_const('CollectionNestingSpecModel', test_class)
     ActiveJob::Base.queue_adapter = :test
+    allow(ActiveFedora::SolrService).to receive(:add)
   end
 
   describe 'after save' do
+    it 'indexes the current object inline' do
+      allow(NestedRelationshipReindexJob).to receive(:perform_later)
+
+      record.after_update_nested_collection_relationship_indices
+
+      expect(ActiveFedora::SolrService)
+        .to have_received(:add)
+        .with({ 'id' => id }, commit: true)
+    end
+
     it 'queues nested relationship reindexing' do
       allow(NestedRelationshipReindexJob).to receive(:perform_later)
 

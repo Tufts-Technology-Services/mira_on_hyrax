@@ -24,6 +24,7 @@ module Hyrax
 
       def after_update_nested_collection_relationship_indices
         @during_save = false
+        index_current_nested_relationship_document
         enqueue_nested_relationship_reindex_for(id: id, extent: reindex_extent)
         # rubocop:disable Style/GuardClause
         if self.class.to_s == "Collection"
@@ -82,6 +83,10 @@ module Hyrax
     end
 
     private
+
+    def index_current_nested_relationship_document
+      ActiveFedora::SolrService.add(to_solr, commit: true)
+    end
 
     def enqueue_nested_relationship_reindex_for(id:, extent:)
       NestedRelationshipReindexJob.perform_later(id, extent)
