@@ -632,7 +632,7 @@ task put_objects_in_workflow: :environment do
     tries = 20
     begin
       object = object.reload
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("publish", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("publish", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: "Migrated from Fedora 3")
     rescue NoMethodError
       tries -= 1

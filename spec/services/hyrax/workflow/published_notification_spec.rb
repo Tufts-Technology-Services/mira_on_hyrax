@@ -14,7 +14,9 @@ RSpec.describe Hyrax::Workflow::PublishedNotification, :workflow do
     work_global_id = work.to_global_id.to_s
     entity = Sipity::Entity.where(proxy_for_global_id: work_global_id).first
 
-    described_class.new(entity, '', depositor, recipients)
+    # needs a different comment
+    comment = Sipity::Comment.new(entity: entity)
+    described_class.new(entity, comment, depositor, recipients)
   end
 
   it "includes a full url in the message" do

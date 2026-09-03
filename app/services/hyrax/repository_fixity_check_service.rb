@@ -5,7 +5,7 @@ module Hyrax
     # etc. It is not otherwise called or relied upon in Hyrax.
     # @see https://github.com/samvera/hyrax/wiki/Hyrax-Management-Guide#fixity-checking
     def self.fixity_check_everything
-      results = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(has_model_ssim: "FileSet"), rows: 500_000, fl: 'id')
+      results = Hyrax::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(has_model_ssim: "FileSet"), rows: 500_000, fl: 'id')
       ids = results.map { |o| o['id'] }
       ids.each do |fs|
         file_set = ::FileSet.find(fs)
@@ -26,7 +26,7 @@ module Hyrax
 
     def self.fixity_check_random_sampling
       # current count 174884
-      results = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(has_model_ssim: "FileSet"), rows: 500_000, fl: 'id')
+      results = Hyrax::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(has_model_ssim: "FileSet"), rows: 500_000, fl: 'id')
       ids = results.map { |o| o['id'] }
       random_sample = ids.sample(2000)
       count = 0

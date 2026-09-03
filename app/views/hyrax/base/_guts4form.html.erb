@@ -1,25 +1,26 @@
 <% # we will yield to content_for for each tab, e.g. :files_tab %>
+<% # TODO: Not passing tabs local param to this partial is deprecated and the tabs param will be required in Hyrax 3.0 Need to review this throughly %>
 <% tabs ||= %w[metadata files relationships] # default tab order %>
 <div class="row">
   <div class="col-xs-12 col-sm-8">
     <div class="panel panel-default tabs" role="main">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <% tabs.each_with_index do | tab, i | %>
+        <% (tabs - ['share']).each_with_index do | tab, i | %>
           <% if i == 0 %>
             <li role="presentation" class="active">
           <% else %>
             <li role="presentation">
           <% end %>
               <a href="#<%= tab %>" aria-controls="<%= tab %>" role="tab" data-toggle="tab">
-                <%= t("hyrax.works.form.tab.#{tab}") %>
+                <%= form_tab_label_for(form: f.object, tab: tab) %>
               </a>
             </li>
         <% end %>
 
         <li role="presentation" id="tab-share" class="hidden">
           <a href="#share" aria-controls="share" role="tab" data-toggle="tab">
-            <%= t("hyrax.works.form.tab.share") %>
+            <%= form_tab_label_for(form: f.object, tab: 'share') %>
           </a>
         </li>
       </ul>
@@ -48,24 +49,26 @@
       </div>
     </div>
   </div>
-    <div class="save-controls">
-  <% if @curation_concern.persisted?  %>
-    <% workflow_status_with_draft = Tufts::WorkflowStatus.status(@curation_concern.id) %>
-    <% unless workflow_status_with_draft == 'unpublished'%>
-   <div class="col-xs-12 col-sm-4">
-      <div class="panel panel-default">
-          <div class="panel-heading">
-              <h3 class="panel-title">Manage Draft</h3>
-          </div>
-          <div class="list-group-item">
-              <%= react_component('DraftControls', {curation_concern_id: curation_concern.id, draft_saved: curation_concern.draft_saved?}, {camelize_props: true}) %>
-          </div>
-      </div>
-  </div>
+  <% # We added the save-controls div and moved the widget inside of it. Everythign inside the if is our code. %>
+  <div class="save-controls">
+    <% # Unsure if @curation_concern was populated follow concerns/hyrax/collections_controller_behavior.rb %>
+    <% if @curation_concern.persisted?  %>
+      <% workflow_status_with_draft = Tufts::WorkflowStatus.status(@curation_concern.id) %>
+      <% unless workflow_status_with_draft == 'unpublished'%>
+         <div class="col-xs-12 col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Manage Draft</h3>
+                </div>
+                <div class="list-group-item">
+                    <%= react_component('DraftControls', {curation_concern_id: curation_concern.id, draft_saved: curation_concern.draft_saved?}, {camelize_props: true}) %>
+                </div>
+            </div>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
-  <div id="savewidget" class="col-xs-12 col-sm-4 fixedsticky" role="complementary">
-    <%= render 'form_progress', f: f %>
-  </div>
+    <div id="savewidget" class="col-xs-12 col-sm-4 fixedsticky" role="complementary">
+      <%= render 'form_progress', f: f %>
+    </div>
   </div>
 </div>

@@ -8,6 +8,7 @@ module Tufts
     end
 
     def setup
+      # temp remove this
       set_default_workflow
       grant_publish_role_to_admins
     end
@@ -17,7 +18,8 @@ module Tufts
       # associated PermissionTemplate exist, even if the database has been reset
       # Cribbed from hyrax/lib/tasks/default_admin_set.rake
       begin
-        AdminSet.find_or_create_default_admin_set_id
+        ::Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
+        # id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
       rescue ActiveRecord::RecordNotUnique
         Rails.logger.debug "Tried to make default permission template but it already exists"
       end

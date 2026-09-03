@@ -26,7 +26,7 @@ module Tufts
     # publish a work, and kick off a handle registration job if appropriate
     def self.publish(work:, current_user:, comment:)
       subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("publish", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("publish", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: comment)
       Hyrax::Actors::HandleAssuranceActor.ensure_handle(object: work)
     end
@@ -36,7 +36,7 @@ module Tufts
     # and kick off a handle registration job if appropriate
     def self.batch_publish(work:, current_user:, comment:)
       subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("batch_publish", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("batch_publish", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: comment)
       Hyrax::Actors::HandleAssuranceActor.ensure_handle(object: work)
     end
@@ -45,7 +45,7 @@ module Tufts
     # unpublish a work
     def self.unpublish(work:, current_user:, comment:)
       subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("unpublish", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("unpublish", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: comment)
     end
 
@@ -53,7 +53,7 @@ module Tufts
     # unpublish a work
     def self.batch_unpublish(work:, current_user:, comment:)
       subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-      sipity_workflow_action = PowerConverter.convert_to_sipity_action("batch_unpublish", scope: subject.entity.workflow) { nil }
+      sipity_workflow_action = Sipity::WorkflowAction("batch_unpublish", subject.entity.workflow) { nil }
       Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: comment)
     end
 
