@@ -51,6 +51,7 @@ gem 'sprockets', '3.7.2'
 gem 'whenever', require: false
 
 # gem 'tufts-curation', git: 'https://github.com/TuftsUniversity/tufts-curation', tag: 'v2.0.2'
+# Nothing Change
 gem 'tufts-curation', git: 'https://github.com/TuftsUniversity/tufts-curation', branch: 'hyrax_3_secound'
 
 group :development, :test do
