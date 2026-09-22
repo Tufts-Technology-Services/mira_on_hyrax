@@ -596,7 +596,7 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
+    mini_portile2 (2.8.1)
     minitest (5.15.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -664,7 +664,7 @@ GEM
       nokogiri (~> 1.6)
       rails (~> 5.0)
       rdf
-    racc (1.6.0)
+    racc (1.6.2)
     rack (2.2.3.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -836,10 +836,9 @@ GEM
     rubyzip (2.3.2)
     samvera-nesting_indexer (2.0.0)
       dry-equalizer
-    sanitize (5.2.1)
+    sanitize (6.0.1)
       crass (~> 1.0.2)
-      nokogiri (>= 1.8.0)
-      nokogumbo (~> 2.0)
+      nokogiri (>= 1.12.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -1030,7 +1029,7 @@ DEPENDENCIES
   rsolr (>= 1.0)
   rspec-rails
   rubyzip (>= 1.2.2)
-  sanitize (= 5.2.1)
+  sanitize (= 6.0.1)
   sass-rails (~> 5.0)
   selenium-webdriver
   shoulda-matchers (~> 4.5.1)
