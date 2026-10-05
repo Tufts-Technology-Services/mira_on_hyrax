@@ -5,6 +5,8 @@ RSpec.shared_examples 'a work with facetable years' do
 
   it "indexes years in YYYY format" do
     work.primary_date = ["1835"]
+    print("HERE!")
+    print(work.to_solr['pub_date_facet_isim'])
     expect(work.to_solr['pub_date_facet_isim']).to include 1835
   end
 
