@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: https://github.com/TuftsUniversity/tufts-curation
-  revision: 61aff097e0de0e094f32841c3fb4d32b73a86c42
+  revision: 812fe080717bfa306bdcf74c3ee38eafa992174d
   branch: hyrax_3_secound
   specs:
     tufts-curation (1.3.4)
