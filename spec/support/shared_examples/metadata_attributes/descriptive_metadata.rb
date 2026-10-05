@@ -44,7 +44,7 @@ shared_examples 'has descriptive metadata attributes' do
 
   it 'has doi' do
     # TODO: doi figure out why it thinks the D should be apitalize now
-    work.Doi = '387415'
+    work.doi = '387415'
     expect(work.resource.dump(:ttl))
       .to match(/doi/)
   end
