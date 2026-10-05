@@ -6,15 +6,18 @@ GIT
 
 GIT
   remote: https://github.com/TuftsUniversity/tufts-curation
-  revision: 812fe080717bfa306bdcf74c3ee38eafa992174d
+  revision: c907d087ddfe97958aa5d12a82ecebfc62fb7724
   branch: hyrax_3_secound
   specs:
     tufts-curation (1.3.4)
       active-fedora (~> 13.1, >= 13.1.2)
-      activerecord
-      activesupport
+      activerecord (>= 5.0, < 7)
+      activesupport (>= 5.0, < 7)
       chronic
-      hyrax (>= 2.1.0, < 4)
+      hyrax (>= 3.0.0, < 3.7)
+      json (< 2.7)
+      logger (~> 1.6)
+      solrizer
 
 GEM
   remote: https://rubygems.org/
@@ -107,8 +110,8 @@ GEM
     awesome_nested_set (3.9.0)
       activerecord (>= 4.0.0, < 8.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1283.0)
-    aws-sdk-core (3.254.1)
+    aws-partitions (1.1292.0)
+    aws-sdk-core (3.257.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -116,11 +119,12 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.130.0)
-      aws-sdk-core (~> 3, >= 3.254.0)
+      rexml (~> 3.4, >= 3.4.2)
+    aws-sdk-kms (1.132.0)
+      aws-sdk-core (~> 3, >= 3.256.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.229.0)
-      aws-sdk-core (~> 3, >= 3.254.1)
+    aws-sdk-s3 (1.233.1)
+      aws-sdk-core (~> 3, >= 3.256.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -133,7 +137,7 @@ GEM
     bcp47 (0.3.3)
       i18n
     bcrypt (3.1.13)
-    bigdecimal (4.1.2)
+    bigdecimal (4.1.3)
     bixby (3.0.2)
       rubocop (= 0.85.1)
       rubocop-ast (~> 0.3.0)
@@ -384,7 +388,7 @@ GEM
       logger
     hiredis (0.6.3)
     htmlentities (4.4.2)
-    http_logger (1.0.2)
+    http_logger (1.0.3)
     httpclient (2.9.0)
       mutex_m
     hydra-access-controls (11.0.7)
@@ -511,7 +515,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.21.2)
+    json (2.6.3)
     json-canonicalization (0.4.0)
     json-ld (3.1.10)
       htmlentities (~> 4.3)
@@ -523,7 +527,7 @@ GEM
     json-ld-preloaded (3.1.6)
       json-ld (~> 3.1)
       rdf (~> 3.1)
-    json-schema (6.2.0)
+    json-schema (6.2.1)
       addressable (~> 2.8)
       bigdecimal (>= 3.1, < 5)
     jwt (2.10.3)
@@ -620,7 +624,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0701)
+    mime-types-data (3.2026.0929)
     mimemagic (0.3.10)
       nokogiri (~> 1)
       rake
@@ -643,9 +647,9 @@ GEM
     net-ldap (0.16.1)
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.3.0)
+    net-protocol (0.4.0)
       timeout
-    net-smtp (0.5.1)
+    net-smtp (0.5.2)
       net-protocol
     nio4r (2.7.5)
     noid (0.9.0)
@@ -975,6 +979,10 @@ GEM
       retriable
       ruby-progressbar
       rubyzip
+    solrizer (4.1.0)
+      activesupport
+      nokogiri
+      xml-simple
     sparql (3.2.6)
       builder (~> 3.2, >= 3.2.4)
       ebnf (~> 2.3, >= 2.3.5)
@@ -1034,7 +1042,7 @@ GEM
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.8.0)
-    unicode-types (1.11.0)
+    unicode-types (1.12.0)
     valkyrie (2.2.0)
       activemodel
       activesupport
@@ -1063,6 +1071,8 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
+    xml-simple (1.1.9)
+      rexml
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.18)
