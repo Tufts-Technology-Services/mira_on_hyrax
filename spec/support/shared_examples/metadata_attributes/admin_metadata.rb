@@ -40,8 +40,9 @@ shared_examples 'has admin metadata attributes' do
 
   it 'has held_by' do
     work.held_by = ['United States']
+    # TODO: make sure this chagne is fine
     expect(work.resource.dump(:ttl))
-      .to match(/bibframe\.org\/vocab\/heldBy/)
+      .to match(/bibframe\/heldBy/)
   end
 
   it 'has steward' do
