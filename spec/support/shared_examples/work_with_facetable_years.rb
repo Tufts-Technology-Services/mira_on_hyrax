@@ -7,7 +7,7 @@ RSpec.shared_examples 'a work with facetable years' do
     work.primary_date = ["1835"]
     print("HERE!")
     print(work.method(:to_solr).source_location.inspect)
-    print(work.to_solr['pub_date_facet_isim'])
+    # print(work.to_solr['pub_date_facet_isim'])
     result = work.to_solr['pub_date_facet_isim']
     expect(result).to include 1835
   end
