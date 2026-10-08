@@ -39,7 +39,7 @@ shared_examples 'has descriptive metadata attributes' do
   it 'has isbn' do
     work.isbn = ['9780790506395']
     expect(work.resource.dump(:ttl))
-      .to match(/isbn/)
+      .to match(/Isbn/)
   end
 
   it 'has doi' do
