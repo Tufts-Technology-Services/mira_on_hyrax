@@ -4,6 +4,8 @@ module Hyrax
     class MiraWorkflowNotification < AbstractNotification
       # regardless of what is passed in, set the recipients according to this notification's requirements
       def initialize(entity, comment, user, recipients)
+        print("HERE!")
+        print(comment)
         super
         @recipients = workflow_recipients.with_indifferent_access
         # @work = ::TuftsModel.find(document.id)
