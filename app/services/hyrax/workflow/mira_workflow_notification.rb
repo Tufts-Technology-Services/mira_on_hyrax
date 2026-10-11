@@ -3,6 +3,7 @@ module Hyrax
   module Workflow
     class MiraWorkflowNotification < AbstractNotification
       # regardless of what is passed in, set the recipients according to this notification's requirements
+      # rubocop:disable Rails/Output
       def initialize(entity, comment, user, recipients)
         print("HERE!")
         print(comment)
