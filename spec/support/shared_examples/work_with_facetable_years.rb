@@ -5,7 +5,7 @@ RSpec.shared_examples 'a work with facetable years' do
 
   it "indexes years in YYYY format" do
     print("HERE!")
-    print(work.to_solr.to_str)
+    print(work.to_solr.to_s)
     work.primary_date = ["1835"]
     # print("HERE!")
     # print(work)
