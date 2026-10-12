@@ -6,7 +6,8 @@ module Hyrax
       # rubocop:disable Rails/Output
       def initialize(entity, comment, user, recipients)
         print("HERE!")
-        # print(comment)
+        print(comment.respond_to?(:comment))
+        print(comment)
         super
         print("Next 2")
         @recipients = workflow_recipients.with_indifferent_access
