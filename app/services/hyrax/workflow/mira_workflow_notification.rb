@@ -6,11 +6,14 @@ module Hyrax
       # rubocop:disable Rails/Output
       def initialize(entity, comment, user, recipients)
         print("HERE!")
-        print(comment)
+        # print(comment)
         super
+        print("Next 2")
         @recipients = workflow_recipients.with_indifferent_access
         # @work = ::TuftsModel.find(document.id)
+        print("Next 3")
         @work = ActiveFedora::Base.find(document.id, cast: true)
+        print("Next 4")
       end
 
       def workflow_recipients
