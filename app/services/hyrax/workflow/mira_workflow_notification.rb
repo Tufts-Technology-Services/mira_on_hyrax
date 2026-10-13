@@ -3,18 +3,11 @@ module Hyrax
   module Workflow
     class MiraWorkflowNotification < AbstractNotification
       # regardless of what is passed in, set the recipients according to this notification's requirements
-      # rubocop:disable Rails/Output
       def initialize(entity, comment, user, recipients)
-        print("HERE!")
-        print(comment.respond_to?(:comment))
-        print(comment)
         super
-        print("Next 2")
         @recipients = workflow_recipients.with_indifferent_access
         # @work = ::TuftsModel.find(document.id)
-        print("Next 3")
         @work = ActiveFedora::Base.find(document.id, cast: true)
-        print("Next 4")
       end
 
       def workflow_recipients
