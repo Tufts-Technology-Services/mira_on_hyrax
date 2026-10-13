@@ -14,6 +14,8 @@ RSpec.feature 'Create a Video', :clean, js: true do
     scenario do
       visit '/dashboard'
       click_link "Works"
+      puts "HERE!"
+      puts page.html
       click_link "Add new work"
       # If you generate more than one work uncomment these lines
       within('form.new-work-select') do
