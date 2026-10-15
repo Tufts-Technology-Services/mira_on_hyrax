@@ -14,12 +14,12 @@ RSpec.feature 'Create a Video', :clean, js: true do
     before { login_as user }
 
     scenario do
-      print("HERE!")
+      # print("HERE!")
       # print(Hyrax::PcdmCollection.count)
       visit '/dashboard'
       click_link "Works"
-      puts "HERE!"
-      puts page.html
+      # puts "HERE!"
+      # puts page.html
       click_link "Add new work"
       # If you generate more than one work uncomment these lines
       within('form.new-work-select') do
