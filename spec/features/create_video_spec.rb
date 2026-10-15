@@ -12,6 +12,8 @@ RSpec.feature 'Create a Video', :clean, js: true do
     before { login_as user }
 
     scenario do
+      print("HERE!")
+      print(Hyrax::PcdmCollection.count)
       visit '/dashboard'
       click_link "Works"
       puts "HERE!"
