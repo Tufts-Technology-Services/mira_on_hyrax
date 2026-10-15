@@ -8,12 +8,14 @@ include Warden::Test::Helpers
 RSpec.feature 'Create a Video', :clean, js: true do
   context 'a logged in admin user' do
     let(:user) { FactoryBot.create(:admin) }
+    # temp make sure a collection exists
+    let(:collection) { FactoryBot.build(:collection_lw) }
 
     before { login_as user }
 
     scenario do
       print("HERE!")
-      print(Hyrax::PcdmCollection.count)
+      # print(Hyrax::PcdmCollection.count)
       visit '/dashboard'
       click_link "Works"
       puts "HERE!"
