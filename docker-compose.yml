@@ -69,7 +69,8 @@ services:
     <<: *dev
     command: >
       bash -c "./build/entrypoint.sh &&
-      bundle exec rails s -p 3000 -b '0.0.0.0'"
+      tail -f /dev/null
+      # bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - "${SERVER_PORTS}"
     expose:
@@ -123,7 +124,8 @@ services:
       - bundled:/usr/local/bundle
     command: >
       bash -c "./build/entrypoint.sh &&
-      RAILS_ENV=test bundle exec rails s -p 3001 -b '0.0.0.0'"
+      tail -f /dev/null
+      # RAILS_ENV=test bundle exec rails s -p 3001 -b '0.0.0.0'"
  #     puma -b tcp://0.0.0.0:3001 -e test"
     ports:
       - "${TEST_PORTS}"

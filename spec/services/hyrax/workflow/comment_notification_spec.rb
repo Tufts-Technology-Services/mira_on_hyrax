@@ -14,7 +14,9 @@ RSpec.describe Hyrax::Workflow::CommentNotification, :workflow, :clean do
     work_global_id = work.to_global_id.to_s
     entity = Sipity::Entity.where(proxy_for_global_id: work_global_id).first
 
-    described_class.new(entity, '', depositor, recipients)
+    # TODO: make sure no where else we are sending strings in as comments
+    # TODO: Does this test need a comment?
+    described_class.new(entity, nil, depositor, recipients)
   end
 
   it "includes a full url in the message" do
