@@ -18,7 +18,7 @@ module Hyrax
         parsed_ids.delete(id)
         enhanced_id_list = []
         parsed_ids.each do |p_id|
-          results = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(id: p_id), rows: 1, fl: 'title_tesim')
+          results = Hyrax::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query(id: p_id), rows: 1, fl: 'title_tesim')
           title_tesim = results[0]['title_tesim']
           enhanced_id_list.push(id: p_id, title: title_tesim[0])
         end

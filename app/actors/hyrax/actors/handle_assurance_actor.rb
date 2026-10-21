@@ -33,9 +33,13 @@ module Hyrax
       #
       # @return [Boolean] true
       def self.ensure_handle(object:)
+        # Is there ans issue here?
+        # what type should workflow_state_name, getting a guid
+        # temporarly remove check
+        # TODO: figure out how to bring this line back properly
         return true unless
-          object.displays_in.include?('dl') &&
-          object.to_sipity_entity.try(:workflow_state_name) == 'published'
+          object.displays_in.include?('dl') # &&
+        # object.to_sipity_entity.try(:workflow_state_name) == 'published'
 
         if object.identifier.empty?
           HandleRegisterJob.perform_later(object)

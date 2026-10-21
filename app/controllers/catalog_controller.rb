@@ -30,7 +30,7 @@ class CatalogController < ApplicationController
     config.show.partials.insert(1, :openseadragon)
 
     config.search_builder_class = TuftsCatalogSearchBuilder
-    #     config.search_builder_class = Hyrax::CatalogSearchBuilder
+    #     config.search_builder_class =  Blacklight::SearchBuilder
     # Show gallery view
     config.view.gallery.partials = [:index_header, :index]
     config.view.slideshow.partials = [:index]

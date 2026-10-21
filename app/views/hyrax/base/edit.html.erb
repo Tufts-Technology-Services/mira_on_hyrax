@@ -1,5 +1,6 @@
-<% provide :page_title, curation_concern_page_title(curation_concern) %>
+<% provide :page_title, title_presenter(curation_concern).page_title %>
 <% provide :page_header do %>
+<% # Override Note: We removed aria-hidden %>
 <h1><%= t("hyrax.works.update.header") %></h1>
 <% end %>
 

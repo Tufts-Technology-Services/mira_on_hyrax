@@ -39,13 +39,14 @@ shared_examples 'has descriptive metadata attributes' do
   it 'has isbn' do
     work.isbn = ['9780790506395']
     expect(work.resource.dump(:ttl))
-      .to match(/isbn/)
+      .to match(/Isbn/)
   end
 
   it 'has doi' do
     work.doi = '387415'
+    # TODO: make sure this is to check the data definition " <http://id.loc.gov/ontologies/bibframe/Doi>"
     expect(work.resource.dump(:ttl))
-      .to match(/doi/)
+      .to match(/Doi/)
   end
 
   it 'has description' do

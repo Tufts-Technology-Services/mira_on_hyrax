@@ -12,6 +12,8 @@ RSpec.feature 'Mark as reviewed button', :clean, js: true do
 
     scenario do
       visit "/concern/pdfs/#{pdf.id}"
+      puts "HERE!"
+      puts page.html
       # Specs for the buttons
       find('.mark-as-reviewed').click
       # The JS calls this as well, but Capybara doesn't seem to

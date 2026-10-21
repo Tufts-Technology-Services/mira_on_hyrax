@@ -56,4 +56,11 @@ Rails.application.configure do
   config.exports_storage_dir   = Rails.root.join('tmp', 'exports')
   config.templates_storage_dir = Rails.root.join('tmp', 'templates')
   config.metadata_upload_dir   = Rails.root.join('tmp', 'metadata')
+
+  # TODO: add this to other enviorments
+  config.after_initialize do
+    # This resolves an issue loading symbols causing pysch disallowed class error
+    # Check out https://discuss.rubyonrails.org/t/cve-2022-32224-possible-rce-escalation-bug-with-serialized-columns-in-active-record/81017
+    config.active_record.yaml_column_permitted_classes = [Symbol, Hash, ActiveSupport::HashWithIndifferentAccess]
+  end
 end

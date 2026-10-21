@@ -17,14 +17,14 @@ describe Tufts::WorkflowStatus, :workflow, :clean do
 
   it 'returns published for an published work when given its ID' do
     subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-    sipity_workflow_action = PowerConverter.convert_to_sipity_action("publish", scope: subject.entity.workflow) { nil }
+    sipity_workflow_action = Sipity::WorkflowAction("publish", subject.entity.workflow) { nil }
     Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: "Published by #{current_user}")
     expect(workflow_status.status(work.id)).to eq('published')
   end
 
   it 'returns edited for an published work that has a draft when given its ID' do # rubocop:disable RSpec/ExampleLength
     subject = Hyrax::WorkflowActionInfo.new(work, current_user)
-    sipity_workflow_action = PowerConverter.convert_to_sipity_action("publish", scope: subject.entity.workflow) { nil }
+    sipity_workflow_action = Sipity::WorkflowAction("publish", subject.entity.workflow) { nil }
     Hyrax::Workflow::WorkflowActionService.run(subject: subject, action: sipity_workflow_action, comment: "Published by #{current_user}")
     File.open(Rails.application.config.drafts_storage_dir.join(work.id), 'w+')
     expect(workflow_status.status(work.id)).to eq('edited')
