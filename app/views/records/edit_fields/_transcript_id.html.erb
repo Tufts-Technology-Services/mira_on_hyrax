@@ -7,9 +7,9 @@
            Transcription
         </legend>
         <% if f.object.human_readable_type == "Audio" %>
-          <p>You will need to attach an TEI XML file to to this work to select a transcript.</p>
+          <p>You will need to attach a TEI XML or SRT file to this work to select a transcript.</p>
         <% else %>
-          <p>You will need to attach an TEI, VTT, or SRT file to to this work to select a transcript.</p>
+          <p>You will need to attach a TEI, VTT, or SRT file to this work to select a transcript.</p>
         <% end %>
         <p>Select the file to be used as the transcription for this <%= f.object.human_readable_type %>.</p>
         <%= f.select :transcript_id, @form.transcript_files(f.object.human_readable_type), {}, { class: 'form-control' } %>
