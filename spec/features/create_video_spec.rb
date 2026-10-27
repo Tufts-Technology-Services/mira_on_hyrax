@@ -22,7 +22,7 @@ RSpec.feature 'Create a Video', :clean, js: true do
       end
       expect(page).to have_content "Add New Video"
       # We want the transcription UI to show up on the form
-      expect(page).to have_content('You will need to attach an TEI, VTT, or SRT file to to this work to select a transcript.')
+      expect(page).to have_content('You will need to attach a TEI, VTT, or SRT file to this work to select a transcript.')
     end
   end
 end

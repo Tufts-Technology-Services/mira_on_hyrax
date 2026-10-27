@@ -22,7 +22,7 @@ RSpec.feature 'Create a Audio', :clean, js: true do
       end
       expect(page).to have_content "Add New Audio"
       # We want the transcription UI to show up on the form
-      expect(page).to have_content('You will need to attach an TEI XML file to to this work to select a transcript.')
+      expect(page).to have_content('You will need to attach a TEI XML or SRT file to this work to select a transcript.')
     end
   end
 end
