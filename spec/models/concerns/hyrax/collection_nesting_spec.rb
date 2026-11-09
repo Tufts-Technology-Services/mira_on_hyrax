@@ -32,6 +32,7 @@ RSpec.describe Hyrax::CollectionNesting do
     stub_const('CollectionNestingSpecModel', test_class)
     ActiveJob::Base.queue_adapter = :test
     allow(ActiveFedora::SolrService).to receive(:add)
+    allow(ActiveFedora::SolrService).to receive(:query).and_return([])
   end
 
   describe 'after save' do
@@ -43,6 +44,23 @@ RSpec.describe Hyrax::CollectionNesting do
       expect(ActiveFedora::SolrService)
         .to have_received(:add)
         .with({ 'id' => id }, commit: true)
+    end
+
+    it 'preserves existing nesting fields so they are not wiped before the reindex job runs' do
+      allow(NestedRelationshipReindexJob).to receive(:perform_later)
+      nesting_fields = {
+        'nesting_collection__parent_ids_ssim' => ['parent'],
+        'nesting_collection__ancestors_ssim' => ['parent'],
+        'nesting_collection__pathnames_ssim' => ["parent/#{id}"],
+        'nesting_collection__deepest_nested_depth_isi' => 2
+      }
+      allow(ActiveFedora::SolrService).to receive(:query).and_return([nesting_fields.merge('id' => 'stale')])
+
+      record.after_update_nested_collection_relationship_indices
+
+      expect(ActiveFedora::SolrService)
+        .to have_received(:add)
+        .with(nesting_fields.merge('id' => id), commit: true)
     end
 
     it 'queues nested relationship reindexing' do

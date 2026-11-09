@@ -80,8 +80,27 @@ module Hyrax
 
     private
 
+    # to_solr does not include the nesting indexer fields, and SolrService.add replaces the whole
+    # document. Carry the existing nesting fields forward so they aren't wiped while
+    # NestedRelationshipReindexJob is pending (Hyrax reads deepest_nested_depth when nesting collections).
     def index_current_nested_relationship_document
-      ActiveFedora::SolrService.add(to_solr, commit: true)
+      ActiveFedora::SolrService.add(existing_nesting_fields.merge(to_solr), commit: true)
+    end
+
+    def existing_nesting_fields
+      fields = nesting_solr_field_names
+      doc = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id]),
+                                            fl: fields.join(','), rows: 1).first
+      return {} if doc.nil?
+      doc.to_h.slice(*fields)
+    end
+
+    def nesting_solr_field_names
+      config = Samvera::NestingIndexer.configuration
+      [config.solr_field_name_for_storing_parent_ids,
+       config.solr_field_name_for_storing_ancestors,
+       config.solr_field_name_for_storing_pathnames,
+       config.solr_field_name_for_deepest_nested_depth]
     end
 
     def enqueue_nested_relationship_reindex_for(id:, extent:)
